@@ -1,0 +1,24 @@
+{
+  "name": "lab-joel",
+  "version": "1.0.0",
+  "description": "restful api get post put delete.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Joel Clair",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^5.0.0",
+    "jest": "^22.1.4"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "uuid": "^3.2.1"
+  }
+}
