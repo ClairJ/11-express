@@ -1,30 +1,16 @@
-'use strict'
+'use strict';
 
-const Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'})
+const Promise = require('bluebird');
+const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 
-const storage = module.exports = {}
+const storage = module.exports = {};
+const basePath = `${__dirname}/../data`;
 
-storage.create = (schema, item) => {
-  let json = JSON.stringify(item)
-  return fs.writeFileProm(`${__dirname}/../data/${schema}/${item._id}.json`, json)
-    .then(() => item)
-}
+let writer = (schema, id, json) => fs.writeFileProm(`${basePath}/${schema}/${id}.json`, json);
+let reader = (schema, id) => fs.readFileProm(`${basePath}/${schema}/${id}.json`);
 
-storage.fetchOne = (schema, itemId) => {
-  return fs.readFileProm(`${__dirname}/../data/${schema}/${itemId}.json`);
-}
-
-storage.fetchAll = (schema) => {
-  return fs.readFileProm(`${__dirname}/../data/${schema}`);
-}
-
-storage.update = (schema, itemId, item) => {
-  let json = JSON.stringify(item);
-  return fs.readFileProm(`${__dirname}/../data/${schema}/${itemId}.json`, json)
-    .then(() => item)
-}
-
-storage.destroy = (itemId) => {
-  return fs.unlinkProm(`${__dirname}/../data/note/${itemId}.json`)
-}
+storage.create = (schema, id, item) => writer(schema, id, item);
+storage.fetchOne = (schema, itemId) => reader(schema, itemId);
+storage.fetchAll = (schema) => fs.readdirProm(`${basePath}/${schema}`);
+storage.destroy = (schema, itemId) => fs.unlinkProm(`${basePath}/${schema}/${itemId}.json`);
+storage.update = (schema, itemId, item) => writer(schema, itemId, item);
